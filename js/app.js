@@ -10,7 +10,7 @@ const bots = new Map(); let focusId = null; const log = [];
 const deskOrder = [...Array(TEAM.length + FREE_DESKS).keys()].filter(i => ![9, 17, 24].includes(i)); // leave 3 desks free
 
 // --- bots in the scene
-TEAM.forEach((t, i) => { const b = office.addBot(deskOrder[i], { ...t, status: 'idle', task: '', request: null, updatedAt: Date.now() }, i); b.el = document.createElement('div'); b.el.className = 'bub'; overlay.append(b.el); bots.set(t.id, b); });
+TEAM.forEach((t, i) => { const b = office.addBot(deskOrder[i], { ...t, status: 'idle', task: '', request: null, updatedAt: Date.now() }, i); b.el = document.createElement('div'); b.el.className = 'bot-tag'; overlay.append(b.el); bots.set(t.id, b); });
 
 // --- legend + lighting
 document.getElementById('legend').innerHTML = Object.entries(STATUS_COLORS).map(([k, c]) => `<span style="--c:${c}"><i></i>${k.replace('_', ' ')}</span>`).join('');
@@ -69,12 +69,14 @@ setInterval(renderTeam, 5000);
 var allBubbles = q.get('bubbles') === 'all';
 function updateBubble(b) {
   const show = b.status === 'needs_you' || b.status === 'error' || b.id === focusId || (allBubbles && b.status !== 'idle');
-  b.el.style.display = show ? '' : 'none'; if (!show) return;
-  const key = b.status + b.task + b.request;
+  const key = show + b.status + b.task + b.request;
   if (b.el._key !== key) {
-    b.el._key = key; b.el.className = 'bub' + (b.status === 'needs_you' ? ' needs' : ''); b.el.style.setProperty('--c', STATUS_COLORS[b.status]);
-    const icon = { thinking: '💭 ', needs_you: '✋ ', error: '⚠ ', done: '✔ ' }[b.status] || '';
-    b.el.innerHTML = `<div class="n">${icon}${esc(b.name)}</div>${esc(b.status === 'needs_you' ? b.request : b.status === 'thinking' ? b.task + ' …' : b.task)}${b.status === 'needs_you' ? btns(b.id) : ''}`;
+    b.el._key = key; b.el.className = 'bot-tag'; b.el.style.setProperty('--c', STATUS_COLORS[b.status]);
+    const kind = b.status === 'needs_you' ? 'needs' : b.status === 'error' ? 'err' : '';
+    const label = { needs_you: 'Needs you', error: 'Error' }[b.status] || b.status;
+    const text = b.status === 'needs_you' ? b.request : b.status === 'thinking' ? b.task + ' …' : b.task;
+    b.el.innerHTML = (show ? `<div class="bub ${kind}"><div class="lbl">${esc(label)}</div>${esc(text)}${b.status === 'needs_you' ? btns(b.id) : ''}</div>` : '')
+      + `<div class="plate"><i></i>${esc(b.name)}${b.status === 'needs_you' ? '<b class="bang">!</b>' : ''}</div>`;
   }
   const p = office.screenPos(b); b.el.style.left = p.x + 'px'; b.el.style.top = p.y + 'px';
 }

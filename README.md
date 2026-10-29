@@ -6,7 +6,7 @@ Live isometric 3D dashboard of the Grok Bot team (Three.js r160 vendored in `ven
     cd /workspace/grok-office && python3 -m http.server 8765
 Open http://localhost:8765/
 
-URL options: `?light=day|evening|night` · `?bubbles=all` (task bubbles for every working bot) · `?static` (frozen office, no live layer)
+URL options: `?light=day|evening|night` · `?bubbles=all` (task bubbles for every working bot) · `?zoom=1.8` (initial zoom, 0.7–4) · `?static` (frozen office, no live layer)
 · `?feed=URL&interval=3000` (poll JSON) · `?ws=ws://host:port` (WebSocket). Default is mock mode.
 Click a bot (or a team row) to focus it; mouse wheel zooms.
 
