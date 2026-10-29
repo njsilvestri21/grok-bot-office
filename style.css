@@ -36,3 +36,12 @@ h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px;col
 .bub .lbl{font-variant:small-caps;text-transform:lowercase;letter-spacing:.8px;font-weight:700;font-size:11px;color:var(--c);opacity:.95}
 .bub.needs .lbl{color:#b86a00}.bub.err .lbl{color:#c4223a}
 .bub.needs .no{background:#efe0c4;color:#5a4320;border:0!important}
+/* reference-match pass: dark navy, orange approve, status chips */
+:root{--bg:#0b0d14;--panel:#12151f;--line:#222838}
+#side section{border-radius:14px;margin:8px;background:#151925;border:1px solid var(--line)!important}
+.ok{background:#ff6a3d!important;color:#fff!important;border-radius:999px!important;font-weight:600}
+.no{background:transparent!important;color:#dfe5f0!important;border:1px solid #3a4152!important;border-radius:999px!important}
+.bub.needs .ok{background:#ff6a3d!important;color:#fff!important}
+.bub.needs .no{background:transparent!important;color:#5a4320!important;border:1px solid #d9c49c!important}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border-radius:999px;border:1px solid var(--c);color:var(--txt);background:color-mix(in srgb,var(--c) 14%,transparent);font-size:10px;white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c)}

@@ -1,14 +1,15 @@
+// Avatars come from each Grok Bot's profile.json (avatarShape / avatarColor).
 // Data adapter: mock (default), JSON polling (?feed=url) or WebSocket (?ws=url).
 // All sources call onSnapshot(bots[]) and onEvent(event). See README for schema.
 
 export const TEAM = [
-  ['dreggbot','dr eggbot','Bot designer'],['oracle','Oracle','Q&A'],['mail','.mail','Inbox'],['pastabase','Pastabase','Creepypasta archivist'],
-  ['vesper','Vesper','Chess coach'],['pitwall','Pit Wall','GT7 coach'],['couchpotato','Couch Potato','Watch picks'],['dm','Dungeon Master','Text adventures'],
-  ['mixtape','Mixtape Maker','Music digger'],['trendline','Trendline','X trends'],['logpose','Log Pose','One Piece'],['benchmark','Bench Mark','eBay pricing'],
-  ['textcleanup','Text-cleanup','Rewrites'],['coach','Grok Bot Coach','Bot health'],['dojo','Dojo','SF6 coach'],['morningwire','Morning Wire','News'],
-  ['bookmarks','X Bookmarks','Bookmarks KB'],['touchline','Touchline','Football'],['edgecase','Edge Case','Card flips'],['playmaker','Playmaker','EA FC coach'],
-  ['botscout','Bot Scout','X scout'],['threadbait','Thread Bait','AskReddit'],['weather','Weather Bot','Weather'],['levelzero','Level Zero','Backrooms'],['patchwork','Patchwork','Coding'],
-].map(([id, name, role]) => ({ id, name, role }));
+  ['dreggbot','dr eggbot','Bot designer','blob','cyan'],['oracle','Oracle','Q&A',null,null],['mail','.mail','Inbox','blob','black'],['pastabase','Pastabase','Creepypasta archivist','pumpkin','orange'],
+  ['vesper','Vesper','Chess coach','hex','cyan'],['pitwall','Pit Wall','GT7 coach',null,'orange'],['couchpotato','Couch Potato','Watch picks','star','green'],['dm','Dungeon Master','Text adventures',null,null],
+  ['mixtape','Mixtape Maker','Music digger','hex','black'],['trendline','Trendline','X trends','cloud','black'],['logpose','Log Pose','One Piece',null,null],['benchmark','Bench Mark','eBay pricing','blob','gray'],
+  ['textcleanup','Text-cleanup','Rewrites','pebble','cyan'],['coach','Grok Bot Coach','Bot health','blob','blue'],['dojo','Dojo','SF6 coach',null,null],['morningwire','Morning Wire','News',null,null],
+  ['bookmarks','X Bookmarks','Bookmarks KB','cloud','gray'],['touchline','Touchline','Football','sparkle','orange'],['edgecase','Edge Case','Card flips','square',null],['playmaker','Playmaker','EA FC coach',null,null],
+  ['botscout','Bot Scout','X scout',null,'green'],['threadbait','Thread Bait','AskReddit',null,null],['weather','Weather Bot','Weather','pebble','cyan'],['levelzero','Level Zero','Backrooms',null,null],['patchwork','Patchwork','Coding',null,null],
+].map(([id, name, role, shape, color]) => ({ id, name, role, shape, color }));  // shape/color = real Grok Bot avatar (null = default)
 
 const TASKS = {
   dreggbot:['Sketching a new bot persona','Tuning skill descriptions'], oracle:['Researching a tricky question','Cross-checking sources'],

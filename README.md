@@ -20,10 +20,12 @@ Click a bot (or a team row) to focus it; mouse wheel zooms.
 Snapshot (feed response, or any WS message containing `bots`):
 ```json
 { "bots": [ { "id": "patchwork", "name": "Patchwork", "role": "Coding",
+  "shape": "star", "color": "green",
   "status": "coding", "task": "Fixing a failing test", "request": null,
   "updatedAt": 1761746400000 } ] }
 ```
 `status` ∈ `coding | browsing | thinking | needs_you | idle | error | done`. `request` is the question shown on `needs_you`.
+Optional `shape` ∈ `blob | pebble | hex | square | star | sparkle | cloud | pumpkin` (unknown/null → `blob`) and `color` ∈ `cyan | black | gray | orange | green | blue` (unknown/null → soft light gray) override the avatar set in `js/data.js` TEAM (taken from each agent's profile.json `avatarShape`/`avatarColor`); a change re-builds that bot live.
 `updatedAt` is epoch ms. `id` must match an id in `js/data.js` TEAM (unknown ids are ignored).
 
 WebSocket event messages (server → client):

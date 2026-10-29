@@ -20,11 +20,18 @@ setLight(q.get('light') || 'night');
 
 // --- data
 function apply(u, quiet) {
-  const b = bots.get(u.id); if (!b) return;
+  let b = bots.get(u.id); if (!b) return;
+  if ((u.shape !== undefined && u.shape !== b.shape) || (u.color !== undefined && u.color !== b.color)) b = restyle(b, u);
   const changed = b.status !== u.status;
   Object.assign(b, { status: u.status, task: u.task ?? b.task, request: u.request ?? null, updatedAt: u.updatedAt ?? u.at ?? Date.now() });
   if (u.status === 'done') setTimeout(() => b.status === 'done' && apply({ id: b.id, status: 'idle' }, true), 2500);
   if (changed && !quiet) addLog(b, u.status === 'needs_you' ? `needs you: ${b.request}` : `${u.status.replace('_', ' ')} — ${b.task}`, u.status);
+}
+// feed/ws can override a bot's avatar: rebuild its mesh at the same desk
+function restyle(b, u) {
+  b.desk.group.remove(b.group);
+  const nb = office.addBot(office.desks.indexOf(b.desk), { id: b.id, name: b.name, role: b.role, shape: u.shape ?? b.shape, color: u.color ?? b.color, status: b.status, task: b.task, request: b.request, updatedAt: b.updatedAt });
+  nb.el = b.el; bots.set(b.id, nb); return nb;
 }
 function addLog(b, text, status) { log.unshift({ at: Date.now(), name: b.name, text, status }); log.length = Math.min(log.length, 80); renderLog(); }
 const source = createSource({ onSnapshot: list => { list.forEach(u => apply(u, true)); renderTeam(); }, onEvent: e => { if (e.type === 'status') apply(e); if (e.type === 'log') { const b = bots.get(e.id); b && addLog(b, e.text, b.status); } renderTeam(); } });
@@ -54,7 +61,7 @@ function renderTeam() {
   const order = { needs_you: 0, error: 1, coding: 2, browsing: 2, thinking: 2, done: 3, idle: 4 };
   document.getElementById('team').innerHTML = all.sort((a, b) => order[a.status] - order[b.status] || a.name.localeCompare(b.name)).map(b => `
     <div class="row ${b.id === focusId ? 'sel' : ''}" data-id="${b.id}" style="--c:${STATUS_COLORS[b.status]}">
-      <span class="dot"></span><span><span class="nm">${esc(b.name)}</span> <span class="rl">· ${esc(b.role)}</span></span><span class="st">${b.status.replace('_', ' ')}<br><span class="rl">${rel(b.updatedAt)}</span></span>
+      <span class="dot"></span><span><span class="nm">${esc(b.name)}</span> <span class="rl">· ${esc(b.role)}</span></span><span class="st"><span class="chip">${b.status.replace('_', ' ')}</span><br><span class="rl">${rel(b.updatedAt)}</span></span>
       <span class="act">${esc(b.status === 'needs_you' ? b.request : b.task)}</span>${b.status === 'needs_you' ? btns(b.id) : ''}</div>`).join('');
 }
 function renderLog() {
